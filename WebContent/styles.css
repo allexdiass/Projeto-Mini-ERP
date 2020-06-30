@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Roboto:wght@300;500;900&family=Varela+Round&display=swap');
+
+html, body {
+    background-color: #44475a;
+    height: 100%;
+}
+
+a {
+    font-family: 'Roboto', sans-serif;
+}
+
+.navbar  {
+    box-shadow: 0px 1px 11px #333333;
+}
+
+.container {
+	padding: 1.3%;
+}

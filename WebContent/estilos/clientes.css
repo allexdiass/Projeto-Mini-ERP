@@ -1,0 +1,8 @@
+.botao-menu {
+    margin-bottom: 15px;
+}
+
+#dados {
+	max-height: 70%;
+	overflow-y: scroll;
+}

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./imgs/icon.png" type="image/png">
+<link rel="stylesheet" href="bulma/css/bulma.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="estilos/produtos.css">
+<title>ERP Libertas</title>
+</head>
+
+<body>
+	<nav class="navbar is-success" role="navigation"
+		aria-label="main navigation">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="index.html"> <!--<img src="imgs/accounting.png" width="28" height="28"> -->
+				<h4 class="title is-4">
+					<i class="fas fa-chart-pie"></i>&nbsp;Libertas ERP
+				</h4>
+			</a> <a role="button" class="navbar-burger burger" aria-label="menu"
+				aria-expanded="false" data-target="navbarBasicExample"> <span
+				aria-hidden="true"></span> <span aria-hidden="true"></span> <span
+				aria-hidden="true"></span>
+			</a>
+		</div>
+
+		<div id="navbarBasicExample" class="navbar-menu">
+
+			<div class="navbar-start">
+				<a class="navbar-item" href="clientes.html"> Clientes </a> <a
+					class="navbar-item is-active" href="produtos.html"> Produtos </a> <a class="navbar-item" href="financeiro.html">
+					Financeiro </a>
+			</div>
+
+			<div class="navbar-end"></div>
+		</div>
+	</nav>
+	<div class="container is-fluid">
+		<div class="columns">
+			<div class="column is-two-fifths">
+				<div id="formulario">
+					<div class="field">
+						<label class="label">Descrição</label> 
+						<input class="input" id="descricao" type="text" placeholder="Descrição">
+					</div>
+					<div class="field">
+						<label class="label">Preço</label> 
+						<input class="input" id="preco" type="number" placeholder="Preço">
+					</div>
+					<div class="field">
+						<label class="label">Grupo</label>
+						<div class="control has-icons-left">
+							<div class="select is-fullwidth">
+								<select  id="grupo">
+									<option selected>Selecione Grupo</option>
+								</select>
+							</div>
+							<div class="icon is-small is-left">
+								<i class="fas fa-layer-group"></i>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<p class="control">
+							<button class="button is-success is-fullwidth" id="btncadastrar" onclick="cadastrarProdutos()">Cadastrar</button>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<h2 class="title is-2">Produtos Cadastrados</h2>
+				<div class="table-container" id="dados">
+					<table class="table is-fullwidth is-hoverable">
+						<thead>
+						    <tr>
+						      <th></th>
+						      <th><abbr title="Id">Id</abbr></th>
+						      <th><abbr title="Descrição">Descrição</abbr></th>
+						      <th><abbr title="Preço">Preço</abbr></th>
+						      <th><abbr title="Grupo">Grupo</abbr></th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  	<tr></tr>
+						  </tbody>
+					</table>
+				</div>
+				<div class="field">
+					<p class="control">
+						<button class="button is-primary is-fullwidth" id="btnatualiza" onclick="listar()">Atualizar Lista</button>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal" id="modalalterar">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Alterar Produto</p>
+				<button class="delete" aria-label="Fechar" onclick="$('#modalalterar').removeClass('is-active');"></button>
+			</header>
+			<section class="modal-card-body">
+				<div class="field">
+						<label class="label">Descrição</label> 
+						<input class="input" id="descricao_alterar" type="text" placeholder="Descrição">
+					</div>
+					<div class="field">
+						<label class="label">Preço</label> 
+						<input class="input" id="preco_alterar" type="number" placeholder="Preço">
+					</div>
+					<div class="field">
+						<label class="label">Grupo</label>
+						<div class="control has-icons-left">
+							<div class="select is-fullwidth">
+								<select id="grupo_alterar">
+									<option selected>Selecione Grupo</option>
+								</select>
+							</div>
+							<div class="icon is-small is-left">
+								<i class="fas fa-layer-group"></i>
+							</div>
+						</div>
+					</div>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-success" id="btnalterar" onclick="alterarProduto()">Alterar</button>
+				<button class="button" onclick="$('#modalalterar').removeClass('is-active');">Fechar</button>
+			</footer>
+		</div>
+	</div>
+	<div class="modal" id="modalexcluir">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Excluir Produto</p>
+				<button class="delete" aria-label="Fechar" onclick="$('#modalexcluir').removeClass('is-active');"></button>
+			</header>
+			<section class="modal-card-body">
+				<h5 class="title is-5">Excluir produto selecionado?</h5>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-danger" id="btnexcluir" onclick="excluirProduto()">Excluir</button>
+				<button class="button" onclick="$('#modalexcluir').removeClass('is-active');">Fechar</button>
+			</footer>
+		</div>
+	</div>
+	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		
+		var idproduto = 0;
+	
+		function listarGrupos() {
+			document.getElementsByClassName("grupo").innerHTML = "<option selected>carregando..</option>";
+			var oReq = new XMLHttpRequest();
+			oReq.onload = function(e) {
+				var dados = oReq.response;
+				var itens = "<option value='0'>Selecione um Grupo</option>";
+				for (var i in dados) {
+					itens += "<option value='"+dados[i].idgrupo+"'>";
+					itens += dados[i].grupo + "</option>";
+				}
+				document.getElementById("grupo").innerHTML = itens;
+				document.getElementById("grupo_alterar").innerHTML = itens;
+				console.log(itens);
+			}
+			oReq.open("POST", "Controller?m=ListarGrupos");
+			oReq.responseType = "json";
+			oReq.send();
+			
+		}
+		
+		function cadastrarProdutos() {
+			idproduto = 0;
+			$("#btncadastrar").addClass("is-loading");
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+				var dados = req.response;
+				alert(dados);
+				listar();
+				limparCampos();
+				$("#btncadastrar").removeClass("is-loading");
+			}
+
+			var e = document.getElementById("grupo");
+			var idgrupo = e.options[e.selectedIndex].value;
+
+			if (idgrupo == 0) {
+				alert("Selecione uma Grupo");
+				$("#btncadastrar").removeClass("is-loading");
+				return;
+			}
+
+			req.open("POST", "Controller?m=SalvarProduto", true);
+			req.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+			req.send("idproduto=" + idproduto + "&descricao=" + document.getElementById("descricao").value + 
+					"&preco="+ document.getElementById("preco").value + "&grupo=" + idgrupo);
+		}
+		
+		function limparCampos() {
+			idproduto = 0;
+			document.getElementById("descricao").value = "";
+			document.getElementById("preco").value = "";
+			document.getElementById("grupo").value = "0";
+			
+			document.getElementById("descricao_alterar").value = "";
+			document.getElementById("preco_alterar").value = "";
+			document.getElementById("grupo_alterar").value = "0";
+		}
+		
+		function alterar(id) {
+			idproduto = id;
+			$('#modalalterar').addClass('is-active');
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+			  var dados = req.response;
+			  console.log(dados);
+			  document.getElementById("descricao_alterar").value = dados.descricao;
+			  document.getElementById("preco_alterar").value = dados.preco;
+			  if (dados.grupo!=undefined) {
+				  	document.getElementById("grupo_alterar").value = dados.grupo.idgrupo;
+			  }
+			}
+			req.open("POST", "Controller?m=ConsultarProduto", true);
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			req.responseType = "json";
+			req.send("idproduto="+idproduto);
+		}
+		
+		function excluir(id) {
+			idproduto = id;
+			$('#modalexcluir').addClass('is-active');
+		}
+		
+		function excluirProduto() {
+			$("#btnexcluir").addClass("is-loading");
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+			  var dados = req.response;
+			  alert(dados);
+			  listar();
+			  $('#modalexcluir').removeClass('is-active');
+			  $("#btnexcluir").removeClass("is-loading");
+			  idproduto = 0;
+			}
+			req.open("POST", "Controller?m=ExcluirProduto", true);
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			req.send("idproduto="+idproduto);
+		}
+		
+		function alterarProduto() {
+			$("#btnalterar").addClass("is-loading");
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+				var dados = req.response;
+				alert(dados);
+				listar();
+				limparCampos();
+				$("#btnalterar").removeClass("is-loading");
+				$("#modalalterar").removeClass("is-active");
+			}
+
+			var e = document.getElementById("grupo_alterar");
+			var idgrupo = e.options[e.selectedIndex].value;
+
+			if (idgrupo == 0) {
+				alert("Selecione um Grupo");
+				$("#btnalterar").removeClass("is-loading");
+				return;
+			}
+
+			console.log(idgrupo);
+
+			req.open("POST", "Controller?m=SalvarProduto", true);
+			req.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+			req.send("idproduto=" + idproduto + "&descricao="
+					+ document.getElementById("descricao_alterar").value + "&preco="
+					+ document.getElementById("preco_alterar").value +  "&grupo="
+					+ idgrupo);
+		}
+		
+		function listar() {
+			$("#btnatualiza").addClass("is-loading");
+			document.getElementById("dados").innerHTML = "";
+
+			var oReq = new XMLHttpRequest();
+			oReq.onload = function(e) {
+				var dados = oReq.response; // not responseText
+
+				var tab = "<table class='table is-fullwidth is-hoverable'>";
+				tab += "<thead>";
+				tab += "<th></th>";
+				tab += "<th><abbr title='Id'>Id</abbr></th>";
+				tab += "<th><abbr title='Descrição'>Descrição</abbr></th>";
+				tab += "<th><abbr title='Preço'>Preço</abbr></th>";
+				tab += "<th><abbr title='Grupo'>Grupo</abbr></th>";
+				tab += "</thead>";
+				tab += "<tbody>";
+				for ( var i in dados) {
+					console.log(i);
+					console.log(dados[i]);
+					tab += "<tr>";
+					tab += "<td>"
+					tab += '<button class="button is-warning" onclick="alterar(' + dados[i].idproduto + ')"><span class="icon is-small"><i class="far fa-edit"></i></span></button> ';
+					tab += '<button class="button is-danger" onclick="excluir(' + dados[i].idproduto + ')"><span class="icon is-small"><i class="far fa-trash-alt"></i></span></button>';
+					tab += "</td>";
+					tab += "<td>" + dados[i].idproduto + "</td>";
+					tab += "<td>" + dados[i].descricao + "</td>";
+					tab += "<td>" + dados[i].preco + "</td>";
+					if (dados[i].grupo != undefined) {
+						tab += "<td>" + dados[i].grupo.grupo + "</td>";
+					} else {
+						tab += "<td></td>";
+					}
+					tab += "</tr>";
+				}
+
+				tab += "</tbody>"
+				tab += "</table>";
+
+				document.getElementById("dados").innerHTML = tab;
+				$("#btnatualiza").removeClass("is-loading");
+			}
+			oReq.open("POST", "Controller?m=ListarProdutos");
+			oReq.responseType = "json";
+			oReq.send();
+		}
+	listarGrupos();
+	listar();
+	</script>
+</body>
+
+</html>

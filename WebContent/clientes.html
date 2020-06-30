@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bulma/css/bulma.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="estilos/clientes.css">
+<link rel="icon" href="./imgs/icon.png" type="image/png">
+<title>ERP Libertas</title>
+</head>
+
+<body>
+	<nav class="navbar is-success" role="navigation"
+		aria-label="main navigation">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="index.html"> <!--<img src="imgs/accounting.png" width="28" height="28"> -->
+				<h4 class="title is-4">
+					<i class="fas fa-chart-pie"></i>&nbsp;Libertas ERP
+				</h4>
+			</a> <a role="button" class="navbar-burger burger" aria-label="menu"
+				aria-expanded="false" data-target="navbarBasicExample"> <span
+				aria-hidden="true"></span> <span aria-hidden="true"></span> <span
+				aria-hidden="true"></span>
+			</a>
+		</div>
+
+		<div id="navbarBasicExample" class="navbar-menu">
+
+			<div class="navbar-start">
+				<a class="navbar-item is-active" href="clientes.html"> Clientes </a> <a
+					class="navbar-item" href="produtos.html"> Produtos </a> 
+					<a class="navbar-item" href="financeiro.html"> Financeiro </a>
+			</div>
+
+			<div class="navbar-end"></div>
+		</div>
+	</nav>
+	<div class="container is-fluid">
+		<div class="columns">
+			<div class="column is-two-fifths">
+				<div id="formulario">
+					<div class="field">
+						<label class="label">Nome</label> 
+						<input class="input" id="nome" type="text" placeholder="Nome">
+					</div>
+					<div class="field">
+						<label class="label">Endereço</label> 
+						<input class="input" id="endereco" type="text" placeholder="Endereço">
+					</div>
+					<div class="field">
+						<label class="label">Bairro</label> 
+						<input class="input" id="bairro" type="text" placeholder="Bairro">
+					</div>
+					<div class="field">
+						<label class="label">Telefone</label> 
+						<input class="input" id="telefone" type="number" placeholder="Telefone">
+					</div>
+					<div class="field">
+					<label class="label">Cidade</label>
+						<div class="control has-icons-left">
+							<div class="select is-fullwidth">
+								<select id="cidade">
+									<option selected>Selecione uma Cidade</option>
+								</select>
+							</div>
+							<div class="icon is-small is-left">
+								<i class="fas fa-globe"></i>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<p class="control">
+							<button class="button is-success is-fullwidth" id="btncadastrar" onclick="cadastrarCliente()">Cadastrar</button>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<h2 class="title is-2">Clientes Cadastrados</h2>
+				<div class="table-container" id="dados">
+					<table class="table is-fullwidth is-hoverable">
+						<thead>
+						    <tr>
+						      <th></th>
+						      <th><abbr title="Id">Id</abbr></th>
+						      <th><abbr title="Nome">Nome</abbr></th>
+						      <th><abbr title="Endereço">Endereço</abbr></th>
+						      <th><abbr title="Bairro">Bairro</abbr></th>
+						      <th><abbr title="Telefone">Telefone</abbr></th>
+						      <th><abbr title="Cidade">Cidade</abbr></th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  	<tr></tr>
+						  </tbody>
+					</table>
+				</div>
+				<div class="field">
+					<p class="control">
+						<button class="button is-primary is-fullwidth" id="btnatualiza" onclick="listar()">Atualizar Lista</button>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="modalalterar">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Alterar Cliente</p>
+				<button class="delete" aria-label="Fechar" onclick="$('#modalalterar').removeClass('is-active');"></button>
+			</header>
+			<section class="modal-card-body">
+				<div class="field">
+						<label class="label">Nome</label> 
+						<input class="input" id="nome_alterar" type="text" placeholder="Nome">
+					</div>
+					<div class="field">
+						<label class="label">Endereço</label> 
+						<input class="input" id="endereco_alterar" type="text" placeholder="Endereço">
+					</div>
+					<div class="field">
+						<label class="label">Bairro</label> 
+						<input class="input" id="bairro_alterar" type="text" placeholder="Bairro">
+					</div>
+					<div class="field">
+						<label class="label">Telefone</label> 
+						<input class="input" id="telefone_alterar" type="number" placeholder="Telefone">
+					</div>
+					<div class="field">
+					<label class="label">Cidade</label>
+						<div class="control has-icons-left">
+							<div class="select is-fullwidth">
+								<select id="cidade_alterar">
+									<option selected>Selecione uma Cidade</option>
+								</select>
+							</div>
+							<div class="icon is-small is-left">
+								<i class="fas fa-globe"></i>
+							</div>
+						</div>
+					</div>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-success" id="btnalterar" onclick="alterarCliente()">Alterar</button>
+				<button class="button" onclick="$('#modalalterar').removeClass('is-active');">Fechar</button>
+			</footer>
+		</div>
+	</div>
+
+	<div class="modal" id="modalexcluir">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Excluir Cliente</p>
+				<button class="delete" aria-label="Fechar" onclick="$('#modalexcluir').removeClass('is-active');"></button>
+			</header>
+			<section class="modal-card-body">
+				<h5 class="title is-5">Excluir cliente selecionado?</h5>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-danger" id="btnexcluir" onclick="excluirCliente()">Excluir</button>
+				<button class="button" onclick="$('#modalexcluir').removeClass('is-active');">Fechar</button>
+			</footer>
+		</div>
+	</div>
+	<script defer
+		src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var idpessoa = 0;
+
+		function cadastrarCliente() {
+			idpessoa = 0;
+			$("#btncadastrar").addClass("is-loading");
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+				var dados = req.response;
+				alert(dados);
+				listar();
+				limparCampos();
+				$("#btncadastrar").removeClass("is-loading");
+			}
+
+			var e = document.getElementById("cidade");
+			var idcidade = e.options[e.selectedIndex].value;
+
+			if (idcidade == 0) {
+				alert("Selecione uma Cidade");
+				$("#btncadastrar").removeClass("is-loading");
+				return;
+			}
+
+			console.log(idcidade);
+
+			req.open("POST", "Controller?m=SalvarPessoa", true);
+			req.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+			req.send("idpessoa=" + idpessoa + "&nome="
+					+ document.getElementById("nome").value + "&telefone="
+					+ document.getElementById("telefone").value + "&endereco="
+					+ document.getElementById("endereco").value + "&bairro="
+					+ document.getElementById("bairro").value + "&cidade="
+					+ idcidade);
+		}
+		
+		function alterarCliente() {
+			$("#btnalterar").addClass("is-loading");
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+				var dados = req.response;
+				alert(dados);
+				listar();
+				limparCampos();
+				$("#btnalterar").removeClass("is-loading");
+				$("#modalalterar").removeClass("is-active");
+			}
+
+			var e = document.getElementById("cidade_alterar");
+			var idcidade = e.options[e.selectedIndex].value;
+
+			if (idcidade == 0) {
+				alert("Selecione uma Cidade");
+				$("#btnalterar").removeClass("is-loading");
+				return;
+			}
+
+			console.log(idcidade);
+
+			req.open("POST", "Controller?m=SalvarPessoa", true);
+			req.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+			req.send("idpessoa=" + idpessoa + "&nome="
+					+ document.getElementById("nome_alterar").value + "&telefone="
+					+ document.getElementById("telefone_alterar").value + "&endereco="
+					+ document.getElementById("endereco_alterar").value + "&bairro="
+					+ document.getElementById("bairro_alterar").value + "&cidade="
+					+ idcidade);
+		}
+
+		function listarCidades() {
+			document.getElementsByClassName("cidade").innerHTML = "<option selected>carregando..</option>";
+			var oReq = new XMLHttpRequest();
+			oReq.onload = function(e) {
+				var dados = oReq.response;
+				var itens = "<option value='0'>Selecione uma Cidade</option>";
+				for ( var i in dados) {
+					itens += "<option value='"+dados[i].idcidade+"'>";
+					itens += dados[i].cidade + "</option>";
+				}
+				document.getElementById("cidade").innerHTML = itens;
+				document.getElementById("cidade_alterar").innerHTML = itens;
+				console.log(itens);
+			}
+			oReq.open("POST", "Controller?m=ListarCidades");
+			oReq.responseType = "json";
+			oReq.send();
+
+		}
+
+		function limparCampos() {
+			idpessoa = 0;
+			document.getElementById("nome").value = "";
+			document.getElementById("telefone").value = "";
+			document.getElementById("endereco").value = "";
+			document.getElementById("bairro").value = "";
+			document.getElementById("cidade").value = "0";
+			
+			document.getElementById("nome_alterar").value = "";
+			document.getElementById("telefone_alterar").value = "";
+			document.getElementById("endereco_alterar").value = "";
+			document.getElementById("bairro_alterar").value = "";
+			document.getElementById("cidade_alterar").value = "0";
+		}
+		
+		function alterar(id) {
+			idpessoa = id;
+			$('#modalalterar').addClass('is-active');
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+			  var dados = req.response;
+			  console.log(dados);
+			  document.getElementById("nome_alterar").value = dados.nome;
+			  document.getElementById("telefone_alterar").value = dados.telefone;
+			  document.getElementById("endereco_alterar").value = dados.endereco;
+			  document.getElementById("bairro_alterar").value = dados.bairro;
+			  if (dados.cidade!=undefined) {
+				  	document.getElementById("cidade_alterar").value = dados.cidade.idcidade;
+			  }
+
+			}
+			req.open("POST", "Controller?m=ConsultarPessoa", true);
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			req.responseType = "json";
+			req.send("idpessoa="+idpessoa);
+		}
+		
+		function excluir(id) {
+			idpessoa = id;
+			$('#modalexcluir').addClass('is-active');
+		}
+		
+		function excluirCliente() {
+			$("#btnexcluir").addClass("is-loading");
+			var req = new XMLHttpRequest();
+			req.onload = function(e) {
+			  var dados = req.response;
+			  alert(dados);
+			  listar();
+			  $('#modalexcluir').removeClass('is-active');
+			  $("#btnexcluir").removeClass("is-loading");
+			  idpessoa = 0;
+			}
+			req.open("POST", "Controller?m=ExcluirPessoa", true);
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			req.send("idpessoa="+idpessoa);
+		}
+
+		function listar() {
+			$("#btnatualiza").addClass("is-loading");
+			document.getElementById("dados").innerHTML = "";
+
+			var oReq = new XMLHttpRequest();
+			oReq.onload = function(e) {
+				var dados = oReq.response; // not responseText
+
+				var tab = "<table class='table is-fullwidth is-hoverable'>";
+				tab += "<thead>";
+				tab += "<th></th>";
+				tab += "<th><abbr title='Id'>Id</abbr></th>";
+				tab += "<th><abbr title='Nome'>Nome</abbr></th>";
+				tab += "<th><abbr title='Endereço'>Endereço</abbr></th>";
+				tab += "<th><abbr title='Bairro'>Bairro</abbr></th>";
+				tab += "<th><abbr title='Telefone'>Telefone</abbr></th>";
+				tab += "<th><abbr title='Cidade'>Cidade</abbr></th>";
+				tab += "</thead>";
+				tab += "<tbody>";
+				for ( var i in dados) {
+					console.log(i);
+					console.log(dados[i]);
+					tab += "<tr>";
+					tab += "<td>"
+					tab += '<button class="button is-warning" onclick="alterar(' + dados[i].idpessoa + ')"><span class="icon is-small"><i class="far fa-edit"></i></span></button> ';
+					tab += '<button class="button is-danger" onclick="excluir(' + dados[i].idpessoa + ')"><span class="icon is-small"><i class="far fa-trash-alt"></i></span></button>';
+					tab += "</td>";
+					tab += "<td>" + dados[i].idpessoa + "</td>";
+					tab += "<td>" + dados[i].nome + "</td>";
+					tab += "<td>" + dados[i].endereco + "</td>";
+					tab += "<td>" + dados[i].bairro + "</td>";
+					tab += "<td>" + dados[i].telefone + "</td>";
+					if (dados[i].cidade != undefined) {
+						tab += "<td>" + dados[i].cidade.cidade + "/"
+								+ dados[i].cidade.estado + "</td>";
+					} else {
+						tab += "<td></td>";
+					}
+					tab += "</tr>";
+				}
+
+				tab += "</tbody>"
+				tab += "</table>";
+
+				document.getElementById("dados").innerHTML = tab;
+				$("#btnatualiza").removeClass("is-loading");
+			}
+			oReq.open("POST", "Controller?m=ListarPessoas");
+			oReq.responseType = "json";
+			oReq.send();
+		}
+		listar();
+		listarCidades();
+	</script>
+</body>
+
+</html>
